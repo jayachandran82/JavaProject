@@ -20,6 +20,7 @@ import java.util.List;
  */
 public class Zigzag_Traversal_BinaryTree {
     // Breadth First Search (BFS)
+    // Level Ordering
     public static void main(String[] args) {
         Zigzag_Traversal_BinaryTree traversal = new Zigzag_Traversal_BinaryTree();
         TreeNode root = new TreeNode(1);
@@ -40,14 +41,12 @@ public class Zigzag_Traversal_BinaryTree {
         System.out.println(levels);
     }
 
-    private List<List<Integer>> levelOrderZigzag(TreeNode head) {
+    private List<List<Integer>> levelOrderZigzag(TreeNode root) {
         List<List<Integer>> result = new ArrayList<>();
-        if (head == null) {
-            return result;
-        }
+        if (root == null) return result;
 
         Deque<TreeNode> deque = new LinkedList<>();
-        deque.offer(head);
+        deque.offer(root);
         boolean leftToRight = true;
 
         while (!deque.isEmpty()) {
@@ -64,17 +63,15 @@ public class Zigzag_Traversal_BinaryTree {
                         deque.offerLast(treeNode.right);
                     }
                 } else {
-                    if (treeNode.left != null) {
-                        deque.offerFirst(treeNode.left);
-                    }
-                    if (treeNode.right != null) {
-                        deque.offerFirst(treeNode.right);
-                    }
+                    if (treeNode.right != null) deque.offerFirst(treeNode.right);
+                    if (treeNode.left != null) deque.offerFirst(treeNode.left);
+
                 }
+                level.add(treeNode.val);
             }
+
             result.add(level);
             leftToRight = !leftToRight;
-
         }
         return result;
     }

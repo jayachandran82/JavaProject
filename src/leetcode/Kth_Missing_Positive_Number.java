@@ -1,5 +1,7 @@
 package leetcode;
 
+import java.util.Arrays;
+
 /**
  * Kth Missing Positive Number
  * Given an array arr of positive integers sorted in a strictly increasing order, and an integer k.
@@ -18,12 +20,7 @@ package leetcode;
  * Space Complexity: O(1)
  */
 public class Kth_Missing_Positive_Number {
-    public static void main(String[] args) {
-        int[] arr = {2, 3, 4, 7, 11};
-        int k = 5;
-        int result = findKthPositive(arr, k);
-        System.out.println("The " + k + "th missing positive integer is: " + result);
-    }
+    // Binary Search
 
     static int findKthPositive(int[] arr, int k) {
         int start = 0;
@@ -44,5 +41,18 @@ public class Kth_Missing_Positive_Number {
         // At the end, `left` gives us the index where the k-th missing number would be.
         // The k-th missing number is outside the array and is calculated by:
         return start + k;
+    }
+
+    public static void main(String[] args) {
+        int[] arr = {2, 3, 4, 7, 11};
+        int k = 5;
+        int result = findKthPositive(arr, k);
+        System.out.println("Scenario One : Input : " + Arrays.toString(arr));
+        System.out.println("The " + k + "th missing positive integer is: " + result);
+        int[] arr1 = {1, 2, 3, 4};
+        int k1 = 2;
+        int result1 = findKthPositive(arr1, k1);
+        System.out.println("\n Scenario Two : Input : " + Arrays.toString(arr1));
+        System.out.println("The " + k + "th missing positive integer is: " + result1);
     }
 }
