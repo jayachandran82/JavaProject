@@ -1,6 +1,7 @@
 package interview;
 
 /**
+ * LeetCode 442
  * Better Solution (Conditional) : O(n) time and O(1) extra space.
  * <p>
  * This solution works only if array has positive integers and all the elements in the array are in range from 0 to n-1 where n is the size of the array.
@@ -14,6 +15,8 @@ package interview;
  * <p>
  * Time Complexity: O(n)
  * Space Complexity: O(1)
+ * <p>
+ * https://www.youtube.com/watch?v=lFhiz9ntwqk&ab_channel=NikhilLohia
  */
 public class Check_Duplicates_Number_Array {
 

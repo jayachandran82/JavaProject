@@ -1,10 +1,7 @@
 package interview;
 
 
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.Set;
+import java.util.*;
 
 /**
  * You have a lock in front of you with 4 circular wheels. Each wheel has 10 slots: '0', '1', '2', ..., '9'.
@@ -14,69 +11,74 @@ import java.util.Set;
  * wheels that will unlock the lock, return the minimum total number of turns required to open the lock.
  */
 public class LockOpenerWheels {
-    public static void main(String[] args) {
-        LockOpenerWheels lockOpener = new LockOpenerWheels();
-        String targetCombination = "3456";
-        System.out.println(lockOpener.openLock(targetCombination));  // Output: 6
-    }
 
-    public int openLock(String target) {
-        // Initialize the starting position of the lock
-        String start = "0000";
+    private static int openLock(String target) {
+        if ("0000".equals(target)) return 0;
 
-        // Create a set to keep track of visited combinations to avoid revisiting them
         Set<String> visited = new HashSet<>();
-        visited.add(start);
+        Set<String> beginSet = new HashSet<>();
+        Set<String> endSet = new HashSet<>();
 
-        // Initialize the queue for BFS
-        Queue<String> queue = new LinkedList<>();
-        queue.offer(start);
+        beginSet.add("0000");
+        endSet.add(target);
+        visited.add("0000");
 
-        // Initialize steps counter
-        int steps = 0;
+        int level = 0;
 
-        // Start BFS
-        while (!queue.isEmpty()) {
-            int size = queue.size();
-            for (int i = 0; i < size; i++) {
-                String combination = queue.poll();
+        while (!beginSet.isEmpty() && !endSet.isEmpty()) {
+            // Always expand the smaller set for optimization
+            if (beginSet.size() > endSet.size()) {
+                Set<String> temp = beginSet;
+                beginSet = endSet;
+                endSet = temp;
+            }
 
-                // If the current combination is the target, return the number of steps
-                if (combination.equals(target)) {
-                    return steps;
-                }
-
-                // Explore all possible combinations by rotating each wheel
-                for (int j = 0; j < 4; j++) {
-                    // Rotate the wheel in the positive direction
-                    String newCombinationPos = rotateWheel(combination, j, 1);
-                    // Rotate the wheel in the negative direction
-                    String newCombinationNeg = rotateWheel(combination, j, -1);
-
-                    // Add the new combinations to the queue if they haven't been visited before
-                    if (!visited.contains(newCombinationPos)) {
-                        queue.offer(newCombinationPos);
-                        visited.add(newCombinationPos);
+            Set<String> nextLevel = new HashSet<>();
+            for (String current : beginSet) {
+                for (String neighbor : getNeighbors(current)) {
+                    if (endSet.contains(neighbor)) {
+                        return level + 1;
                     }
-                    if (!visited.contains(newCombinationNeg)) {
-                        queue.offer(newCombinationNeg);
-                        visited.add(newCombinationNeg);
+                    if (visited.add(neighbor)) {
+                        nextLevel.add(neighbor);
                     }
                 }
             }
-            steps++; // Increment steps after exploring all combinations at the current level
+
+            beginSet = nextLevel;
+            level++;
         }
 
-        // If the target combination is not reachable
-        return -1;
+        return -1; // target is unreachable
     }
 
-    private String rotateWheel(String combination, int wheelIndex, int direction) {
-        char[] digits = combination.toCharArray();
-        int digit = digits[wheelIndex] - '0';
-        // Rotate the wheel in the specified direction
-        digit = (digit + direction + 10) % 10;
-        digits[wheelIndex] = (char) (digit + '0');
-        return new String(digits);
+    static private List<String> getNeighbors(String state) {
+        List<String> result = new ArrayList<>();
+        char[] chars = state.toCharArray();
+
+        for (int i = 0; i < 4; i++) {
+            char c = chars[i];
+
+            // Rotate forward
+            chars[i] = c == '9' ? '0' : (char) (c + 1);
+            result.add(new String(chars));
+
+            // Rotate backward
+            chars[i] = c == '0' ? '9' : (char) (c - 1);
+            result.add(new String(chars));
+
+            // Restore original
+            chars[i] = c;
+        }
+
+        return result;
     }
+
+    public static void main(String[] args) {
+
+        String targetCombination = "3456";
+        System.out.println("Minimum moves: " + openLock(targetCombination));  // Output: 6
+    }
+
+
 }

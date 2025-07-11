@@ -21,25 +21,7 @@ import java.util.List;
 public class Zigzag_Traversal_BinaryTree {
     // Breadth First Search (BFS)
     // Level Ordering
-    public static void main(String[] args) {
-        Zigzag_Traversal_BinaryTree traversal = new Zigzag_Traversal_BinaryTree();
-        TreeNode root = new TreeNode(1);
-        root.left = new TreeNode(2);
-        root.right = new TreeNode(3);
-        root.left.left = new TreeNode(4);
-        root.left.right = new TreeNode(5);
-        root.right.right = new TreeNode(6);
 
-        /**
-         *         1
-         *        / \
-         *       2   3
-         *      / \   \
-         *     4   5   6
-         */
-        List<List<Integer>> levels = traversal.levelOrderZigzag(root);
-        System.out.println(levels);
-    }
 
     private List<List<Integer>> levelOrderZigzag(TreeNode root) {
         List<List<Integer>> result = new ArrayList<>();
@@ -74,5 +56,25 @@ public class Zigzag_Traversal_BinaryTree {
             leftToRight = !leftToRight;
         }
         return result;
+    }
+
+    public static void main(String[] args) {
+        Zigzag_Traversal_BinaryTree traversal = new Zigzag_Traversal_BinaryTree();
+        TreeNode root = new TreeNode(1);
+        root.left = new TreeNode(2);
+        root.right = new TreeNode(3);
+        root.left.left = new TreeNode(4);
+        root.left.right = new TreeNode(5);
+        root.right.right = new TreeNode(6);
+
+        /**
+         *         1
+         *        / \
+         *       2   3
+         *      / \   \
+         *     4   5   6
+         */
+        List<List<Integer>> levels = traversal.levelOrderZigzag(root);
+        System.out.println(levels);
     }
 }
